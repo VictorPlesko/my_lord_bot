@@ -1,0 +1,54 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="insert_question_data" author="VictorPlesko">
+        <insert tableName="question">
+            <column name="value" value="Милорд, ваша крепость слаба. Нам нужно построить новую башню."/>
+            <column name="effect" value="1"/>
+        </insert>
+
+        <insert tableName="question">
+            <column name="value" value="Милорд, наша прекрасная столица воняет нечистотами половине года. Давайте построим канализацию."/>
+            <column name="effect" value="2"/>
+        </insert>
+        <insert tableName="question">
+            <column name="value" value="Милорд, мы хотим организовать половничество к могиле святого Армана. Возможно ли это сейчас?"/>
+            <column name="effect" value="3"/>
+        </insert>
+        <insert tableName="question">
+            <column name="value" value="Милорд, пьяная компания ваших солдат разорила аббатство. Свершите над ними правосудие."/>
+            <column name="effect" value="4"/>
+        </insert>
+        <insert tableName="question">
+            <column name="value" value="Милорд, чудо свершилось на Юге и кровавые слезы проступили на глазах статуи пророка. Нам стоит признать чудо истинным?"/>
+            <column name="effect" value="5"/>
+        </insert>
+        <insert tableName="question">
+            <column name="value" value="Милорд, река Капля снова пересохла. Нам нужно построить платину."/>
+            <column name="effect" value="6"/>
+        </insert>
+        <insert tableName="question">
+            <column name="value" value="Милорд, корабли на карантине. Возможно это чума. Закрыть на карантин весь порт?"/>
+            <column name="effect" value="7"/>
+        </insert>
+        <insert tableName="question">
+            <column name="value" value="Милорд, языческая страна хочет покупать у нас железо. Наладить торговый путь?"/>
+            <column name="effect" value="8"/>
+        </insert>
+        <insert tableName="question">
+            <column name="value" value="Милорд, люди просят поросят построить новую таверну. Отдать указание на постройку?"/>
+            <column name="effect" value="9"/>
+        </insert>
+        <insert tableName="question">
+            <column name="value" value="Милорд, нам нужно больше армии. Отдать распоряжение о призыве среди населения?"/>
+            <column name="effect" value="10"/>
+        </insert>
+        <rollback>
+            <delete tableName="question" />
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,83 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="insert_effect_data" author="VictorPlesko">
+        <insert tableName="effect">
+            <column name="religion" value="-10"/>
+            <column name="army" value="10"/>
+            <column name="people" value="-10"/>
+            <column name="coffers" value="-10"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="0"/>
+            <column name="army" value="0"/>
+            <column name="people" value="10"/>
+            <column name="coffers" value="-10"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="10"/>
+            <column name="army" value="-5"/>
+            <column name="people" value="10"/>
+            <column name="coffers" value="-10"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="10"/>
+            <column name="army" value="-10"/>
+            <column name="people" value="0"/>
+            <column name="coffers" value="0"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="10"/>
+            <column name="army" value="-5"/>
+            <column name="people" value="5"/>
+            <column name="coffers" value="-5"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="0"/>
+            <column name="army" value="-5"/>
+            <column name="people" value="+10"/>
+            <column name="coffers" value="-10"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="0"/>
+            <column name="army" value="-5"/>
+            <column name="people" value="+15"/>
+            <column name="coffers" value="-10"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="-10"/>
+            <column name="army" value="0"/>
+            <column name="people" value="-5"/>
+            <column name="coffers" value="15"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="-5"/>
+            <column name="army" value="-5"/>
+            <column name="people" value="+10"/>
+            <column name="coffers" value="-10"/>
+        </insert>
+
+        <insert tableName="effect">
+            <column name="religion" value="0"/>
+            <column name="army" value="+10"/>
+            <column name="people" value="-10"/>
+            <column name="coffers" value="-5"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="effect" />
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

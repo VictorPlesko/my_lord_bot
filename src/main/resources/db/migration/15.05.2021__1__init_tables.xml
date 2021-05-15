@@ -1,0 +1,47 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="create_effect" author="VictorPlesko">
+        <createTable tableName="effect">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="religion" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="army" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="people" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="coffers" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback >
+            <dropTable tableName="effect"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create_question" author="VictorPlesko">
+        <createTable tableName="question">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="value" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="effect" type="int">
+                <constraints nullable="false" foreignKeyName="question_effect_id_fk" references="effect(id)" />
+            </column>
+        </createTable>
+        <rollback >
+            <dropTable tableName="question"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

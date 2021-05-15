@@ -1,3 +1,5 @@
+import com.permutive.sbtliquibase.SbtLiquibase
+
 name := "MyLordBot"
 
 version := "0.1"
@@ -72,7 +74,15 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % slickVersion,
   "org.slf4j" % "slf4j-nop" % "1.6.4",
   "com.typesafe.slick" %% "slick-hikaricp" % slickVersion,
-  "com.lihaoyi" %% "requests" % "0.6.5"
+  "com.lihaoyi" %% "requests" % "0.6.5",
+  "mysql" % "mysql-connector-java" % "8.0.21"
 )
 
 addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.1" cross CrossVersion.full)
+
+enablePlugins(SbtLiquibase)
+liquibaseUsername := "root"
+liquibasePassword := "password"
+liquibaseDriver   := "com.mysql.cj.jdbc.Driver"
+liquibaseUrl      := "jdbc:mysql://localhost:3306/my_lord_db?createDatabaseIfNotExist=true"
+liquibaseChangelog := new File("src/main/resources/db/migration/master.xml")
