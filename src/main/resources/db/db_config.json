@@ -1,0 +1,6 @@
+{
+  "dbDriverName": "com.mysql.cj.jdbc.Driver",
+  "dbUrl": "jdbc:mysql://localhost:3306/my_lord_db",
+  "dbUser": "root",
+  "dbPwd": "password"
+}
