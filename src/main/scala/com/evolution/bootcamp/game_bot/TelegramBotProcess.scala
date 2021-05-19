@@ -3,7 +3,7 @@ package com.evolution.bootcamp.game_bot
 import cats.effect.concurrent.Ref
 import cats.effect.{Sync, Timer}
 import cats.implicits._
-import com.evolution.bootcamp.game_bot.TelegramBotApi.{ChatID, Token}
+import com.evolution.bootcamp.game_bot.TelegramBotApi.{Button, ChatID, Token}
 import com.evolution.bootcamp.game_bot.dao.DbService
 import com.evolution.bootcamp.game_bot.dto.api.{BotMessage, BotResponse, BotUpdate, Chat}
 import com.evolution.bootcamp.game_bot.utils.Messages
@@ -19,6 +19,7 @@ final case class TelegramBotProcess[F[_] : Sync : Timer](client: Client[F],
   var offset = 0
 
   implicit val gameSettings: GameSettings = GameSettings(ReligionSettings(), ArmySettings(), PeopleSettings(), CofferSettings())
+  val button: Button = List(List(InlineKeyboardButton("Да", "yes"), InlineKeyboardButton("Нет", "no")))
 
   def process(update: BotUpdate): F[Unit] = {
     offset = update.update_id + 1
@@ -47,7 +48,7 @@ final case class TelegramBotProcess[F[_] : Sync : Timer](client: Client[F],
           _ <- api.sendMessage(chatID, Messages.startMessage).void
           question <- dbService.getRandomQuestion
           _ <- gameRepo.put(chatID, GameMoment.default(question))
-          _ <- api.sendMessage(chatID, question.value).void
+          _ <- api.sendMessage(chatID, question.value, button).void
         } yield ()
       case Command.Stop(chatID) => ???
       case Command.Rule(chatID) => api.sendMessage(chatID, Messages.ruleMessage).void

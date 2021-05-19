@@ -1,7 +1,7 @@
 package com.evolution.bootcamp.game_bot
 
 import cats.effect.Sync
-import com.evolution.bootcamp.game_bot.TelegramBotApi.{ChatID, Token}
+import com.evolution.bootcamp.game_bot.TelegramBotApi.{Button, ChatID, Token}
 import com.evolution.bootcamp.game_bot.dto.api.{BotMessage, BotResponse, BotUpdate}
 import io.circe.generic.JsonCodec
 import io.circe.syntax._
@@ -21,7 +21,6 @@ final case class TelegramBotApi[F[_] : Sync](client: Client[F], token: Token) {
   implicit val decoderBotResponseForUpdate: EntityDecoder[F, BotResponse[List[BotUpdate]]] = jsonOf[F, BotResponse[List[BotUpdate]]]
   implicit val decoderBotForMessage: EntityDecoder[F, BotResponse[BotMessage]] = jsonOf[F, BotResponse[BotMessage]]
 
-  type Button = List[List[InlineKeyboardButton]]
   implicit val encoderForButton: QueryParamEncoder[Button] =
     (value: Button) => QueryParameterValue(s"""{"inline_keyboard":${value.asJson}}""")
   //  implicit val encoderForButton1: QueryParamEncoder[List[List[KeyboardButton]]] =
@@ -33,11 +32,12 @@ final case class TelegramBotApi[F[_] : Sync](client: Client[F], token: Token) {
     client.expect[BotResponse[List[BotUpdate]]](uri)
   }
 
-  def sendMessage(chatID: ChatID, text: String): F[BotResponse[BotMessage]] = {
-    val r: Button =
-      List(
-        List(InlineKeyboardButton("hi1!", "sps1"), InlineKeyboardButton("hi2!", "sps2")),
-        List(InlineKeyboardButton("hi3!", "sps3"), InlineKeyboardButton("hi3!", "sps3")))
+  def sendMessage(chatID: ChatID, text: String, button: Button = Nil): F[BotResponse[BotMessage]] = {
+//    val r: Button =
+//      List(
+//        List(InlineKeyboardButton("hi1!", "sps1"), InlineKeyboardButton("hi2!", "sps2")),
+//        List(InlineKeyboardButton("hi3!", "sps3"), InlineKeyboardButton("hi3!", "sps3")))
+
     //    val r: List[List[KeyboardButton]] =
     //      List(
     //        List(KeyboardButton("hi1!"), KeyboardButton("hi2!")),
@@ -45,11 +45,12 @@ final case class TelegramBotApi[F[_] : Sync](client: Client[F], token: Token) {
     val uri = (botApiUri / "sendMessage")
       .withQueryParam("chat_id", chatID)
       .withQueryParam("text", text)
-      .withQueryParam[Button, String]("reply_markup", r)
+      .withQueryParam[Button, String]("reply_markup", button)
     client.expect[BotResponse[BotMessage]](uri)
   }
 }
 object TelegramBotApi {
   type Token = String
   type ChatID = Int
+  type Button = List[List[InlineKeyboardButton]]
 }
