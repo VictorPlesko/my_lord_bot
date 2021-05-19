@@ -1,8 +1,10 @@
 package com.evolution.bootcamp.game_bot
 
+import cats.data.OptionT
 import cats.effect.concurrent.Ref
 import cats.effect.{Sync, Timer}
 import cats.implicits._
+import com.evolution.bootcamp.game_bot.Command.{noResponse, yesResponse}
 import com.evolution.bootcamp.game_bot.TelegramBotApi.{Button, ChatID, Token}
 import com.evolution.bootcamp.game_bot.dao.DbService
 import com.evolution.bootcamp.game_bot.dto.api.{BotMessage, BotResponse, BotUpdate, Chat}
@@ -19,17 +21,17 @@ final case class TelegramBotProcess[F[_] : Sync : Timer](client: Client[F],
   var offset = 0
 
   implicit val gameSettings: GameSettings = GameSettings(ReligionSettings(), ArmySettings(), PeopleSettings(), CofferSettings())
-  val button: Button = List(List(InlineKeyboardButton("Да", "yes"), InlineKeyboardButton("Нет", "no")))
+
+  val button: Button = List(List(InlineKeyboardButton("Да", yesResponse), InlineKeyboardButton("Нет", noResponse)))
 
   def process(update: BotUpdate): F[Unit] = {
     offset = update.update_id + 1
-    update.message.fold(Sync[F].unit) { message =>
-      val command = Command.parseIntoCommand(message)
-      command.fold(Sync[F].unit)(handleCommand)
-    }
-    //    update.callback_query.fold(Sync[F].delay(println("None")))(p => Sync[F].delay(println(p))) *>
-    //    update.message.fold(Sync[F].delay(BotResponse(false,BotMessage(1,Chat(1), "fdsf"))))(mes => api.sendMessage(mes.chat.id, "Hello!"))
+    val command = Command.parseIntoCommand(update)
+    command.fold(Sync[F].unit)(handleCommand)
   }
+  //    update.callback_query.fold(Sync[F].delay(println("None")))(p => Sync[F].delay(println(p))) *>
+  //    update.message.fold(Sync[F].delay(BotResponse(false,BotMessage(1,Chat(1), "fdsf"))))(mes => api.sendMessage(mes.chat.id, "Hello!"))
+
 
   def streamUpdates: F[Unit] = {
     fs2.Stream
@@ -50,7 +52,23 @@ final case class TelegramBotProcess[F[_] : Sync : Timer](client: Client[F],
           _ <- gameRepo.put(chatID, GameMoment.default(question))
           _ <- api.sendMessage(chatID, question.value, button).void
         } yield ()
-      case Command.Stop(chatID) => ???
+      case Command.Continue(chatID, action) =>
+        (for {
+          oldGameMoment <- OptionT(gameRepo.get(chatID))
+          question <- OptionT.liftF(dbService.getRandomQuestion)
+          _ <-
+            OptionT.liftF(oldGameMoment.update(action, Some(question)) match {
+              case Left(gameEvents) => api.sendMessage(chatID, gameEvents.effect).void
+              case Right(gameMoment) =>
+                api.sendMessage(chatID, question.value, button) *>
+                  gameRepo.update(chatID, gameMoment)
+            })
+        } yield ()).value.void
+      case Command.Stop(chatID) =>
+        for {
+          _ <- gameRepo.delete(chatID)
+          _ <- api.sendMessage(chatID, Messages.stopMessage)
+        } yield ()
       case Command.Rule(chatID) => api.sendMessage(chatID, Messages.ruleMessage).void
       case Command.Help(chatID) => api.sendMessage(chatID, Messages.helpMessage).void
     }
