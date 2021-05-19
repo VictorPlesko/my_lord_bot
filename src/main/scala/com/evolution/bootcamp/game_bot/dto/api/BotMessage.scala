@@ -1,4 +1,4 @@
-package com.evolution.bootcamp.game_bot.dto
+package com.evolution.bootcamp.game_bot.dto.api
 
 import io.circe.generic.JsonCodec
 
