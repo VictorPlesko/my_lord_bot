@@ -1,5 +1,7 @@
 package com.evolution.bootcamp.game_bot.utils
 
+import com.evolution.bootcamp.game_bot.dao.domain.Effect
+
 object Messages {
   val helpMessage: String =
     """
@@ -20,4 +22,6 @@ object Messages {
   val startMessage: String = "Король Франциск III назначил Вас графом Южных земель. Не успев осознать, что вы граф, к вам приходит множество подданных по разным вопросам."
 
   val stopMessage: String = "Игра остановлена."
+
+  def effectInfoMessage(effect: Effect): String = s"⛪${effect.religion}, ⚔${effect.army}, 🧑${effect.people}, 💰${effect.coffers}"
 }

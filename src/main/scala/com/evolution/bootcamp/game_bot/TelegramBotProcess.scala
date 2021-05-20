@@ -49,8 +49,9 @@ final case class TelegramBotProcess[F[_] : Sync : Timer](client: Client[F],
         for {
           _ <- api.sendMessage(chatID, Messages.startMessage).void
           question <- dbService.getRandomQuestion
-          _ <- gameRepo.put(chatID, GameMoment.default(question))
-          _ <- api.sendMessage(chatID, question.value, button).void
+          gameMoment = GameMoment.default(question)
+          _ <- gameRepo.put(chatID, gameMoment)
+          _ <- api.sendMessage(chatID, Messages.effectInfoMessage(gameMoment.currentEffect) + "\n" + question.value, button).void
         } yield ()
       case Command.Continue(chatID, action) =>
         (for {
@@ -58,9 +59,11 @@ final case class TelegramBotProcess[F[_] : Sync : Timer](client: Client[F],
           question <- OptionT.liftF(dbService.getRandomQuestion)
           _ <-
             OptionT.liftF(oldGameMoment.update(action, Some(question)) match {
-              case Left(gameEvents) => api.sendMessage(chatID, gameEvents.effect).void
+              case Left(gameEvents) =>
+                gameRepo.delete(chatID) *>
+                  api.sendMessage(chatID, gameEvents.effect).void
               case Right(gameMoment) =>
-                api.sendMessage(chatID, question.value, button) *>
+                api.sendMessage(chatID, Messages.effectInfoMessage(gameMoment.currentEffect) + "\n" + question.value, button) *>
                   gameRepo.update(chatID, gameMoment)
             })
         } yield ()).value.void
