@@ -6,6 +6,7 @@ import cats.effect.{ExitCode, IO, IOApp}
 import com.evolution.bootcamp.game_bot.TelegramBotApi.ChatID
 import com.evolution.bootcamp.game_bot.dao.{DbService, DbTransactor}
 import com.evolution.bootcamp.game_bot.dao.config.DbConfig
+import com.evolution.bootcamp.game_bot.game_logic.GameMoment
 import org.http4s.client.blaze.BlazeClientBuilder
 
 import scala.concurrent.ExecutionContext

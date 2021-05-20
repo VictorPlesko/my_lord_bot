@@ -1,4 +1,4 @@
-package com.evolution.bootcamp.game_bot
+package com.evolution.bootcamp.game_bot.game_logic
 
 final case class ReligionSettings(minReligion: Int = 0, maxReligion: Int = 100)
 final case class ArmySettings(minArmy: Int = 0, maxArmy: Int = 100)

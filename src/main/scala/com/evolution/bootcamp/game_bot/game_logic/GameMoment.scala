@@ -1,7 +1,7 @@
-package com.evolution.bootcamp.game_bot
+package com.evolution.bootcamp.game_bot.game_logic
 
-import com.evolution.bootcamp.game_bot.GameEvents.{LittleArmy, LittleCoffer, LittlePeople, LittleReligion, LotOfArmy, LotOfCoffer, LotOfPeople, LotOfReligion}
 import com.evolution.bootcamp.game_bot.dao.domain.{Effect, Question}
+import com.evolution.bootcamp.game_bot.game_logic.GameEvents._
 
 sealed trait GameEvents {
   def effect: String

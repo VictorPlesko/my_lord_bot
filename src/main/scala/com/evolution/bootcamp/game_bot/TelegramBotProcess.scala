@@ -1,13 +1,13 @@
 package com.evolution.bootcamp.game_bot
 
 import cats.data.OptionT
-import cats.effect.concurrent.Ref
 import cats.effect.{Sync, Timer}
 import cats.implicits._
-import com.evolution.bootcamp.game_bot.Command.{noResponse, yesResponse}
 import com.evolution.bootcamp.game_bot.TelegramBotApi.{Button, ChatID, Token}
 import com.evolution.bootcamp.game_bot.dao.DbService
-import com.evolution.bootcamp.game_bot.dto.api.{BotMessage, BotResponse, BotUpdate, Chat}
+import com.evolution.bootcamp.game_bot.dto.api.BotUpdate
+import com.evolution.bootcamp.game_bot.game_logic.Command.{noResponse, yesResponse}
+import com.evolution.bootcamp.game_bot.game_logic._
 import com.evolution.bootcamp.game_bot.utils.Messages
 import org.http4s.client.Client
 

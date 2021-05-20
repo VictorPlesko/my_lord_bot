@@ -1,9 +1,7 @@
-package com.evolution.bootcamp.game_bot
+package com.evolution.bootcamp.game_bot.game_logic
 
-import cats.effect.Sync
-import com.evolution.bootcamp.game_bot.TelegramBotApi.{Button, ChatID}
+import com.evolution.bootcamp.game_bot.TelegramBotApi.ChatID
 import com.evolution.bootcamp.game_bot.dto.api.{BotMessage, BotUpdate, Callback, Chat}
-import com.evolution.bootcamp.game_bot.utils.Messages
 
 sealed trait Command
 object Command {
