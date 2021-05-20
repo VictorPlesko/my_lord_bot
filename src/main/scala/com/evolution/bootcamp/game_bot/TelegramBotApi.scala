@@ -1,8 +1,9 @@
 package com.evolution.bootcamp.game_bot
 
 import cats.effect.Sync
-import com.evolution.bootcamp.game_bot.TelegramBotApi.{Button, ChatID, Token}
+import com.evolution.bootcamp.game_bot.TelegramBotApi.{Button, ChatID, MessageID, Token}
 import com.evolution.bootcamp.game_bot.dto.api.{BotMessage, BotResponse, BotUpdate}
+import cats.implicits._
 import io.circe.generic.JsonCodec
 import io.circe.syntax._
 import org.http4s.circe.jsonOf
@@ -48,9 +49,18 @@ final case class TelegramBotApi[F[_] : Sync](client: Client[F], token: Token) {
       .withQueryParam[Button, String]("reply_markup", button)
     client.expect[BotResponse[BotMessage]](uri)
   }
+
+  def editMessageReplyMarkup(chatId:ChatID, messageId: MessageID, button: Button = Nil): F[BotResponse[BotMessage]] = {
+    val uri = (botApiUri / "editMessageReplyMarkup")
+      .withQueryParam("chat_id", chatId)
+      .withQueryParam("message_id", messageId)
+      .withQueryParam[Button, String]("reply_markup", button)
+    client.expect[BotResponse[BotMessage]](uri)
+  }
 }
 object TelegramBotApi {
   type Token = String
   type ChatID = Int
+  type MessageID = Int
   type Button = List[List[InlineKeyboardButton]]
 }
