@@ -68,7 +68,7 @@ final case class TelegramBotProcess[F[_] : Sync : Timer](client: Client[F],
                   gameRepo.update(chatID, gameMoment)
             })
         } yield ()).value.void
-      case Command.Stop(chatID, messageID) =>
+      case Command.Stop(chatID) =>
         for {
           _ <- gameRepo.delete(chatID)
           _ <- api.sendMessage(chatID, Messages.stopMessage)
