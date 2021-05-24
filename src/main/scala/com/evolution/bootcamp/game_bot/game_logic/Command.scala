@@ -1,6 +1,6 @@
 package com.evolution.bootcamp.game_bot.game_logic
 
-import com.evolution.bootcamp.game_bot.TelegramBotApi.{ChatID, MessageID}
+import com.evolution.bootcamp.game_bot.api.Api.{ChatID, MessageID}
 import com.evolution.bootcamp.game_bot.dto.api.{BotMessage, BotUpdate, Callback, Chat}
 
 sealed trait Command
@@ -15,7 +15,7 @@ object Command {
     botUpdate match {
       case BotUpdate(_, Some(BotMessage(_, Chat(id), command)), None) if command == start => Some(Start(id))
       case BotUpdate(_, Some(BotMessage(_, Chat(id), command)), None) if command == help => Some(Help(id))
-      case BotUpdate(_, Some(BotMessage(messageID, Chat(chatID), command)), None) if command == stop => Some(Stop(chatID))
+      case BotUpdate(_, Some(BotMessage(_, Chat(chatID), command)), None) if command == stop => Some(Stop(chatID))
       case BotUpdate(_, Some(BotMessage(_, Chat(id), command)), None) if command == rule => Some(Rule(id))
       case BotUpdate(_, None, Some(Callback(_, BotMessage(messageID, Chat(chatID), _), data))) =>
         if (data == yesResponse) Some(Continue(chatID, messageID, action = true)) else Some(Continue(chatID, messageID, action = false))

@@ -56,10 +56,6 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic-extras" % circeVersion,
   "io.circe" %% "circe-optics" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
-  "com.typesafe.akka" %% "akka-actor" % akkaVersion,
-  "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
-  "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
-  "com.typesafe.akka" %% "akka-cluster-sharding" % akkaVersion,
   "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
   "org.tpolecat" %% "doobie-core" % doobieVersion,
   "org.tpolecat" %% "doobie-h2" % doobieVersion,
@@ -75,7 +71,8 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-nop" % "1.6.4",
   "com.typesafe.slick" %% "slick-hikaricp" % slickVersion,
   "com.lihaoyi" %% "requests" % "0.6.5",
-  "mysql" % "mysql-connector-java" % "8.0.21"
+  "mysql" % "mysql-connector-java" % "8.0.21",
+  "com.github.pureconfig" %% "pureconfig" % "0.15.0"
 )
 
 addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.1" cross CrossVersion.full)
