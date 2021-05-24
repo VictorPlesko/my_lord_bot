@@ -16,8 +16,7 @@ import org.http4s.client.Client
 
 import scala.concurrent.duration.DurationInt
 
-final case class TelegramBotProcess[F[_] : Sync : Timer](client: Client[F],
-                                                         api: Api[F],
+final case class TelegramBotProcess[F[_] : Sync : Timer](api: Api[F],
                                                          dbService: Dao[F],
                                                          offsetRef: Ref[F, Int],
                                                          gameRepo: Repository[F, ChatID, GameMoment]) {

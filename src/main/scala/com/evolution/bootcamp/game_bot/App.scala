@@ -25,7 +25,7 @@ object App extends IOApp {
               dbService = QuestionDaoImpl(transactor)
               api = TelegramBotApi(client,"1713154808:AAG9IheKlmzxluHFnWrybPQ946phEX_ikMM")
               offsetRef <- Ref.of[IO, Int](0)
-              _ <- new TelegramBotProcess[IO](client, api, dbService,offsetRef,repo).streamUpdates
+              _ <- new TelegramBotProcess[IO](api, dbService,offsetRef,repo).streamUpdates
             } yield ()
           }
       })) as ExitCode.Success
